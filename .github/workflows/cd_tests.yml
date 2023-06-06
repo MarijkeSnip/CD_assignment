@@ -26,8 +26,14 @@ jobs:
       - name: Run tests
         run: pytest
 
-      #nog toevoegen
-      #- name: Deploy to VPS
-        #if: ${{ success() }}
-        #run: |
+      #de
+      - name: Deploy to VPS
+        if: ${{ success() }} #only if succesfull
+        #the encrypted ssh key will be used
+        run: |
+          eval "$(ssh-agent -s)"
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 --decode | openssl aes-256-cbc -d -a -out ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-add ~/.ssh/id_rsa
+          ssh root@164.90.212.25 cd /home/farm/ && git pull origin main && systemctl restart sudo systemctl restart farm
         
