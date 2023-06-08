@@ -1,3 +1,2 @@
-Python 3.10.05
-Flask 2.2.3
-Pytest 7.2.2
+Flask==2.2.2
+pytest==7.2.1

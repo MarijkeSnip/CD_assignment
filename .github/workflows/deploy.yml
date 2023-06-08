@@ -26,19 +26,16 @@ jobs:
       - name: Run tests
         run: pytest
         
-      - name: Configure SSH
+      - name: testing server ssh connection
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 
+          script: |
+            cd /home/farm/
+            git pull origin master
+            git status
+            systemctl restart farm
 
-      #deploy code
-      - name: Deploy to VPS
-        #only if succesfull
-        if: ${{ success() }} 
-        #the encrypted ssh key will be used from repository
-        run: |
-          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} cd ../home/farm/ && git pull origin master && systemctl restart farm
-                  
-     
