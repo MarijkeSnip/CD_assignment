@@ -26,19 +26,23 @@ jobs:
       - name: Run tests
         run: pytest
         
-      - name: Configure SSH
-        uses: appleboy/ssh-action@master
+      - name: Copy file
+        if: ${{ success() }}
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      #deploy code
+          source: "." 
+          target: "/home/farm"
+      
       - name: Deploy to VPS
-        #only if succesfull
-        if: ${{ success() }} 
-        #the encrypted ssh key will be used from repository
-        run: |
-          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} cd ../home/farm/ && git pull origin master && systemctl restart farm
-                  
-     
+        if: ${{ success() }}
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }} 
+          username: ${{ secrets.USERNAME }} 
+          key: ${{ secrets.SSH_PRIVATE_KEY }} 
+          script: |
+            cd /home/farm
+            sudo systemctl restart farm
