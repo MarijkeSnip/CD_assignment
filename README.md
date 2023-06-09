@@ -1,8 +1,7 @@
 [![Continuous Deployment](https://github.com/MarijkeSnip/CD_assignment/actions/workflows/cd_tests.yml/badge.svg)](https://github.com/MarijkeSnip/CD_assignment/actions/workflows/cd_tests.yml)
 
 This is my soluction to implement a continuous deployment pipeline.
-When any changes are committed pytest will run some tests (see test_main.py) and if they are succesfull GitHub Actions logs into the VPS on Digital Ocean 
-updates the code to the latest version.
+When any changes are committed pytest will run some tests (see test_main.py) and if they are succesfull GitHub Actions logs onto the VPS (Digital Ocean) and updates the code to the latest version.
 
 The components i have used are:
 - **Droplet**: 
